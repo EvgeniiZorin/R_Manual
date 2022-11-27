@@ -1,0 +1,901 @@
+---
+# YAML metadata
+title: "R for Data Science - Manual"
+output:
+  pdf_document: default
+  html_document: 
+  # Add table of contents (TOC):
+    toc: true
+    number_sections: true
+    theme: journal
+    toc_depth: 3
+    # TOC floating to the left of the main document content
+    toc_float: 
+      collapsed: false
+      smooth_scroll: false
+  word_document: default
+editor_options:
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(tidy.opts = list(width.cutoff = 60), tidy = TRUE)
+library(tidyverse)
+# add parameter 'echo = FALSE' to the code chunk to prevent printing of the R code that generated the plot. 
+# more details: http://rmarkdown.rstudio.com
+
+```
+
+# Basic information
+
+## Useful resources
+
+[!!! The most useful book for R markdown - "R Markdown: The Definitive Guide"](https://bookdown.org/yihui/rmarkdown/)
+[Ebook "R for Graduate Students"](https://bookdown.org/yih_huynh/Guide-to-R-Book/)  
+[Ebook "R for Data Science"](https://r4ds.had.co.nz/)  
+[Ebook "Statistical Inference via Data Science: A ModernDive into R and Tidyverse"](https://moderndive.com/)  
+[Gradient generator](https://colordesigner.io/gradient-generator)  
+[ggthemes](https://yutannihilation.github.io/allYourFigureAreBelongToUs/ggthemes/)  
+[R studio cheatsheets](https://www.rstudio.com/resources/cheatsheets/)  
+[Introduction to ggplot2](http://r-statistics.co/Complete-Ggplot2-Tutorial-Part1-With-R-Code.html)  
+[Themes for Bootstrap](https://bootswatch.com/3/)
+
+
+
+
+## Versions and plugins
+
+To update R version: go to R GUI (old), run 1) install.packages("installr"); library(installr); choose installr option on the tab next to the option "Help", then update... voila!
+
+## Packages installation and loading: 
+``` {r, eval = FALSE}
+
+getRversion()
+
+install.packages(c("afex", "tidyverse", "emmeans", "writexl", "readxl", "ggthemes", "ggplot2", "extrafont", "reshape", "reshape2", "gcookbook", "readr", "swirl", "ggpubr", "lubridate", "rmarkdown", "formatR", "knitr", "magrittr", 'glue', 'viridis', 'ggsci', 'gcookbook'))
+
+install.packages('plotly')
+
+```
+
+```{r, results ='hide', message=FALSE}
+
+library(afex); library(emmeans); library(tidyverse); library(writexl); library(readxl); library(ggthemes); library(extrafont); library(reshape); library(reshape2); library(gcookbook); library(readr); library(swirl); library(ggpubr); library(ggthemes); library(lubridate); library(rmarkdown); library(formatR); library(knitr); library(magrittr); library(glue); library(viridis); library(ggsci); library(gcookbook); library(plotly)
+
+# font_import() # for extrafont package
+# loadfonts(device = "win") # loading fonts from extrafont
+
+```
+
+## Shortcuts
+
+`Ctrl + Alt + I` : insert an R code chunk
+`Ctrl + Shift + Enter` : run the entire code chunk
+
+# Variables
+
+```{r}
+
+var1 = "string_value"
+
+```
+
+
+
+# Data types
+
+Check the data type of a variable: `class(variable)`
+
+## Character (str)
+
+**Methods**:
+`length()`
+
+```{r}
+# STRING
+var1 = "string"
+class(var1)
+
+# f-string
+a = 5
+b = glue('Value: {a}')
+print(b)
+
+```
+
+## Integer
+
+```{r}
+
+```
+
+
+## Numeric
+
+
+## Logical
+
+```{r}
+a = TRUE
+class(a)
+```
+
+
+## Vector
+
+Composed of elements of the same type
+Slicing is 1-based, so the the starting index is 1 instead of the usual 0. 
+
+Methods:
+- `length(listname)`
+
+```{r}
+
+listNames <- c('a', 'b', 'c', 'd', 'e', 'f')
+listNames[1]
+listNames[1:3] # Slice the list
+listNames[c(1, 3, 6)] # Choose elements at indices 1, 3, and 6
+
+
+```
+
+## List
+
+Composed of elements of different types. 
+
+```{r}
+listNames <- list('a', 15, c("1", "2", "3"), 'd', 'e', 'f')
+class(listNames)
+listNames[[3]] # To slice, usually we use double brackets
+```
+
+## Matrix
+
+```{r}
+m1 = matrix(c(1,2,3,4,5,6), nrow=2, ncol=3, byrow=TRUE)
+m1
+m1[1,3] # Row 1, column 3
+
+```
+
+
+## ???
+```{r}
+
+# DATASET
+# Create brand-new dataset
+data <- data.frame(Chr = c("Chr1", "Chr2", "Chr2", "Chr3", "Chr4", "Chr11"), 
+                   Type = c("1_Promoter", "1_Promoter", "2_Enhancer", "3_Activator", "1_Promoter", "3_Activator"), 
+                   Value = c(1e+9, 5e+10, 6e+9, 9e+10, 8e+10, 5e+10))
+
+data$Type
+
+```
+
+# Operators
+
+**Assignment operators**
+
+```{r}
+# Assignment operators
+a = 5
+a <- 5
+class(a)
+
+```
+
+**Math operators**
+```{r}
+# Math operators
+a = 5; b = 10
+c = a + b
+c
+```
+
+**Relational operators**
+>, <, ==, != 
+
+**Logical operators**
+& (and), | (or)
+
+
+# Flow statements
+
+## IF
+
+```{r}
+
+a = 1
+
+if (a > 2){
+  print("'a' is greater than 2")
+} else {
+  print("not")
+}
+```
+
+
+## FOR
+
+```{r}
+list1 = c(1, 2, 3)
+
+for (i in list1){
+  print(i)
+}
+
+```
+
+## WHILE
+
+```{r}
+i = 1
+
+while (i < 5){
+  print(i)
+  i = i + 1
+}
+```
+
+
+# Modules and packages
+
+**Pre-loaded datasets**:
+```{r}
+
+data() # check a list of pre-loaded datasets
+
+```
+
+
+## Dplyr ( =pandas)
+
+This is basically the analogue to Python's Pandas. 
+
+```{r}
+library(dplyr)
+
+# Read a local file
+#df <- read.csv("Data/diamonds.csv")
+# Load a pre-loaded dataset from a package
+starwars # from the dplyr package
+
+dim(df) # Print dimensions of the dataset
+head(df) # Print the first 5 rows
+# Filter
+filter(starwars, height > 170, mass > 100)
+# Select columns
+select(starwars, height, mass)
+# Choose a randomly-selected sample
+sample_n(starwars, 5) # A numbered sample
+sample_frac(starwars, 0.01) # Fraction of the dataset
+
+```
+An example of a pipeline of a dataset processing:
+
+```{r}
+
+starwars %>% filter(mass < 80, sex == "male") -> males
+males
+
+```
+
+
+
+
+# Functionality
+
+* Ctrl + shift + R : creates headers for your R script   
+* Alt + shift + K : displays all programmed keyboard shortcuts for R   
+* Ctrl + shift + M : write "%>%" (tidyverse pipe)    
+
+
+## Basic commands
+
+* Save as .csv: ```write_csv(name, "filename.csv")```
+* Import data from .txt file: ```read.csv("filename.txt", sep="\t", header=FALSE)```
+* read.csv("filename.csv") # import data from csv file
+* ironmansuits <- read.csv("C:/Users/evgen/Desktop/R_work_folder/Iron_Man_Suits.csv", stringsAsFactors=TRUE)
+* mutate() # creates new columns or modifies current variables in the dataset
+* diamonds %>% mutate(depth_times_price = depth * price)
+* diamonds %>% mutate(depth_times_price = depth * price, is_cut_ideal = cut == "Ideal")
+* analog of f-string in R: library(glue): ```glue("Variable {varname}")```
+* Export graph as .tiff: ```ggsave("test.tiff", units="in", width=8, height=6, dpi=300, compression = 'lzw')```
+
+
+**Operators AND (&), OR (|)**  
+
+* diamonds %>% filter(cut == "Ideal", carat == "0.23", price > 400)
+* select() # gives us specific columns
+* diamonds %>% select (cut, price)
+* arrange() # arranges the values in data frame by values in a variable
+* diamonds %>% arrange(price)
+* diamonds %>% arrange(desc(price))
+* diamonds %>% arrange(price, carat)
+* group_by() / summarise()
+* diamonds %>% group_by(carat) %>% summarise(mean(price), count = n())
+* diamonds %>% group_by(carat) %>% mutate(mean_price = mean(price))
+* runif() # generates random deviates of uniform distribution
+
+**Describing data**  
+
+* str # describe the structure of dataset by type of variable
+* mean, median, max, min, sd
+* dim(my_data) ## show dimensions of a table
+* dim(my_data)
+* summary(my_data)
+* summary(my_data$chrom)
+* ?ggplot
+* seq(1,10)
+* data() # show a list of built-in datasets
+
+
+
+## Datasets
+
+
+
+```{r, results='hide'}
+# Create brand-new dataset
+data <- data.frame(Chr = c("Chr1", "Chr2", "Chr2", "Chr3", "Chr4", "Chr11"), 
+                   Type = c("1_Promoter", "1_Promoter", "2_Enhancer", "3_Activator", "1_Promoter", "3_Activator"), 
+                   Value = c(1e+9, 5e+10, 6e+9, 9e+10, 8e+10, 5e+10))
+data$Chr = gsub("Chr", "", data$Chr) # remove "Chr" from column 1
+data$Chr <- factor(data$Chr, levels=c(seq(1,11), "X", "Y")) # reorder the chromosomes numerically
+
+
+# Create dataset from existing
+diamonds2 <- tibble(diamonds$cut, diamonds$clarity)
+names(diamonds2)[1:4] <- c("Cut", "Clarity") # renames the first 4 columns
+
+# Add new columns
+diamonds2 <- diamonds %>% 
+  mutate(price200 = price - 200, 
+         pricepercarat = price / carat)
+
+# Update the in-table columns with new values
+diamonds %>% mutate(cut = recode(cut, "Ideal" = "IDEAL", "Good" = "GOOD"))
+```
+
+## Filtering
+
+- ```diamonds %>% filter(cut=="Fair" | cut=="Good", price <= 600)``` 
+- ```recode () # modifies the values within a variable```
+- ```filter () # gives us specific rows```
+- ```population2 <- population %>% filter(country == 'Brazil' | country == 'Argentina', year >= 2005)```
+- `df$col1 == "name 1"`
+- `df$col1 %in% c("name1", "name2")`
+
+## Data processing
+
+- Rename df columns by name: ```df.rename(columns={"A": "a", "B": "c"})```
+- Rename df columns by index: ```df.rename(index={0: "x", 1: "y", 2: "z"})```
+
+
+[Information below about tidy data is taken from this link.](https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html#:~:text=Tidy%20data%20is%20a%20standard,Every%20column%20is%20a%20variable.)
+
+**Dataset** - a collection of quantitative and qualitative values. Every value belongs to a variable and an observation.    
+
+**Untidy (messy) data** - rows and columns are mixed up with observations and variables. 
+
+**Tidy data** - a standard way of mapping the meaning of a dataset to its structure. Variables are in columns and observations - in rows. Tidy data makes it easy to extract variables. 
+
+**Examples**:
+
+Untidy (messy) data - 6 observations but only 3 rows - 'wide' dataset: 
+
+```{r}
+
+#define data
+df <- data.frame("."=c('John', 'Jane', 'Mary'), 
+                 Treatment_A=c(16, 3, 2),
+                 Treatment_B=c(0, 4, 5), 
+                 Treatment_C=c(0, 8, 10)
+)
+df
+
+```
+
+Tidy data structure - three variables - Person/name, Treatment, and Result - 'long/tall' dataset - made by melting the untidy one:
+
+```{r}
+
+df <- data.frame("Person/name"=c('John', 'Jane', 'Mary', 'John', 'Jane', 'Mary', 'John', 'Jane', 'Mary'), 
+                 "Treatment"=c('a', 'a', 'a', 'b', 'b', 'b', 'c', 'c', 'c'), 
+                 "Result"=c(16, 3, 2, 0, 4, 5, 0, 8, 10)
+)
+df
+
+```
+
+
+# Graphs and Figures
+
+By convention, independent variable is on X axis, and dependent variable is on Y axis. 
+
+## Dotplots
+
+**Dataset 'population'**
+
+```{r}
+
+# Filtering a sample dataset "population"
+population2 <- population %>% filter(country == 'Brazil' | country == 'Argentina', year >= 2000)
+#population2
+
+# Simple dotplot
+ggplot(population2, aes(x=year, y=population, color=country)) +
+  geom_point(size=4) + 
+  scale_x_continuous(breaks = (seq(min(population2$year), 
+                                   max(population2$year), 
+                                   by = 3))) + 
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(), 
+        axis.text = element_text(size=13),
+        axis.title = element_text(size=15), 
+        panel.background = element_blank(), 
+        axis.line = element_line(size = 1)) + 
+  scale_color_brewer(palette = "Set1") + 
+  labs(title = "Population growth in Brazil and Argentina", 
+       x = "Year", 
+       y = "Population")
+
+# Faceted dotplot
+ggplot(population2, aes(x=year, y=population)) +
+  geom_point() + 
+  facet_wrap(~country, nrow=2)
+
+# Dotplot with callouts
+ggplot(population2, aes(x=year, y=population, color=country, label=population)) +
+  geom_text(check_overlap = TRUE) + 
+  geom_label()
+```
+
+
+## Scatterplots
+
+```{r}
+msleep
+
+# Scatterplot with df msleep
+ggplot(msleep, aes(x=bodywt, y=sleep_total, colour=vore)) + 
+  geom_point() + 
+  xlim(0, 7000) + ylim(0, 21)
+```
+
+## Histograms
+
+
+```{r}
+
+ggplot(diamonds, aes(x = price)) + geom_bar()
+ggplot(diamonds, aes(x = price, fill = cut)) + geom_bar()
+ggplot(diamonds, aes(x=price, fill=cut)) + geom_histogram(binwidth=500) + xlim(0,10000)
+
+```
+
+## Bar graphs
+
+For geom_bar, aggregate numbers of rows for each x-value can be counted by default with argument stat=count. Alternatively, the values can be provided manually for the bar graph by stat="identity". 
+
+```{r}
+
+ggplot(diamonds, aes(x=cut)) + geom_bar()
+
+ggplot(diamonds, aes(x=cut, y=price)) + geom_bar(stat='identity')
+
+ggplot(diamonds, aes(x=cut, fill=cut)) + 
+  geom_bar() + 
+  geom_text(stat="count", aes(label=..count..), vjust=1.5, size=3.5, colour='white')
+
+ggplot(diamonds, aes(x=cut, y=price, fill=cut)) + geom_col()
+
+
+```
+
+## Stacked component bar graphs
+
+```{r}
+
+ggplot(diamonds, aes(x=cut, fill=color)) + 
+  geom_bar()
+
+starwars %>% 
+  filter(hair_color == "black" |       # | = OR
+           hair_color == "brown") %>% 
+  drop_na(sex) %>% 
+  ggplot(aes(x = hair_color, fill = sex)) + 
+  geom_bar(alpha = 0.7) + 
+  theme_bw() + 
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank()) + 
+  labs(title = "Gender and Hair Colour", 
+       x = "Hair Colour", 
+       y = "Number")
+
+```
+
+## Stacked percentage bar graphs
+
+```{r, warning=FALSE}
+
+library(reshape)
+
+# Example 1
+starwars
+starwars %>% 
+  filter(hair_color == "black" |       # | = OR
+           hair_color == "brown") %>% 
+  drop_na(sex) %>% 
+  ggplot(aes(x = sex, fill = hair_color)) + 
+  geom_bar(position = "fill", 
+           alpha = 0.5) + 
+  theme_bw() + 
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank()) + 
+  labs(title = "Gender and Hair Colour", 
+       x = "Sex", 
+       y = "Percentage")
+
+# Example 2
+relig_income
+relig_income %>% 
+  filter(religion == "Atheist" |
+         religion == "Mormon" |
+         religion == "Buddhist") %>%
+  melt(id.vars = "religion") %>% 
+  group_by(religion, variable) %>% 
+  ggplot(aes(x = religion, y = value, fill = variable)) +
+  geom_bar(stat="identity", position = "fill") +
+  theme_bw() + 
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(), 
+        axis.title = element_text()) + 
+  scale_color_brewer(palette = "Set1") +
+  labs(title = "Distribution of income levels by religion", 
+       x = "Religion", 
+       y = "Percentage")
+
+# library gcookbook
+cabbage_exp
+ggplot(cabbage_exp, aes(x = Date, y = Weight, fill = Cultivar)) +
+  geom_col(position = "fill", width=0.5) +
+  scale_y_continuous(labels = scales::percent) +
+  theme_bw() + 
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank()) + 
+    scale_fill_lancet() + # module ggsci - palettes from sci journals
+  labs(title = "Title", 
+       x = "date", 
+       y = "Weight, kg")
+
+# Custom dataset
+df <- data.frame (Type_of_epistasis = c('negative', 'positive', 'negative', 'positive'), 
+                  n = c(250, 750, 300, 700), 
+                  algorithm = c('algorithm1', 'algorithm1', 'algorithm2', 'algorithm2'), 
+                  percentage = c(0.25, 0.75, 0.3, 0.7),
+                  percentage_100 = c(25, 75, 30, 70))
+df
+ggplot(df, aes(x=algorithm, y=percentage, fill=Type_of_epistasis)) +
+  geom_col(position='fill', colour='black') + 
+  scale_y_continuous(labels = scales::percent) +
+  geom_text(aes(label = percentage_100), size = 4, position=position_stack(vjust=0.5), color='white') +
+  theme_bw() + 
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank()) + 
+  scale_fill_lancet() + # module ggsci - palettes from sci journals
+  labs(title = "Distributions of epistasis between two algorithms", 
+       x = "Algorithm", 
+       y = "Distribution of types of epistasis, %")
+
+
+```
+
+## Grouped bar graphs
+
+```{r}
+
+ggplot(diamonds, aes(x = cut, fill = clarity)) + geom_bar(position="dodge")
+
+# grouped facet
+starwars %>% 
+  filter(hair_color %in% c("black", "brown")) %>% 
+  drop_na(sex) %>% 
+  ggplot(aes(sex)) + 
+  geom_bar(aes(fill = sex), alpha = 0.5) + 
+  facet_wrap( ~ hair_color)
+
+# grouped bar graphs with error bars
+head(ToothGrowth)
+df <- ToothGrowth
+df$dose <- as.factor(df$dose)
+data_summary <- function(data, varname, groupnames){
+  require(plyr)
+  summary_func <- function(x, col){
+    c(mean = mean(x[[col]], na.rm=TRUE),
+      sd = sd(x[[col]], na.rm=TRUE))
+  }
+  data_sum<-ddply(data, groupnames, .fun=summary_func,
+                  varname)
+  data_sum <- rename(data_sum, c("mean" = varname))
+  return(data_sum)
+}
+df2 <- data_summary(ToothGrowth, varname="len", 
+                    groupnames=c("supp", "dose"))
+
+## Convert dose to a factor variable
+df2$dose=as.factor(df2$dose)
+head(df2)
+p<- ggplot(df2, aes(x=dose, y=len, fill=supp)) + 
+  geom_bar(stat="identity", color="black", 
+           position=position_dodge()) +
+  geom_errorbar(aes(ymin=len-sd, ymax=len+sd), width=.2,
+                position=position_dodge(.9)) 
+print(p)
+## Finished bar plot
+p+labs(title="Tooth length per dose", x="Dose (mg)", y = "Length")+
+  theme_classic() +
+  scale_fill_manual(values=c('#999999','#E69F00'))
+
+```
+
+## Boxplots
+
+```{r}
+
+ggplot(diamonds, aes(x=cut, y=price)) + geom_boxplot()
+ggplot(diamonds, aes(x=cut, y=price, fill=cut)) + geom_boxplot()
+
+
+```
+
+## Violin plots
+
+```{r}
+
+starwars 
+
+starwars %>% 
+  filter (sex %in% c('male', 'female')) %>% 
+  ggplot(aes(x=sex, y=mass)) + geom_violin()
+
+starwars %>% 
+  filter (sex %in% c('male', 'female')) %>% 
+  ggplot(aes(x=sex, y=mass, fill=sex)) + 
+  geom_violin(adjust=0.7) + # default adjust is 1. Lower means finer resolution
+  guides(fill=FALSE) # make the entries coloured but delete the legend
+
+```
+
+
+## Density plots
+
+They are like histograms, but with probability instead od count
+
+```{r, warning=FALSE}
+
+starwars %>% 
+  filter(gender != 'NA') %>% 
+  ggplot(aes(x=height, fill=gender)) + geom_density(alpha=0.5)
+
+starwars %>% 
+  filter(gender != 'NA') %>% 
+  ggplot(aes(x=height, fill=gender)) + geom_density() + facet_grid( gender ~ .)
+
+starwars %>% 
+  filter(gender != 'NA') %>% 
+  ggplot(aes(x=height, fill=gender)) + geom_density() + facet_grid( . ~ gender )
+
+starwars %>% 
+  filter(gender != 'NA') %>% 
+  ggplot(aes(x=height, fill=gender)) + geom_density() + facet_grid( gender ~ sex )
+
+
+```
+
+## Line graphs
+
+```{r, warning=FALSE}
+
+starwars2 <- starwars %>% filter(sex %in% c('male', 'female'), gender %in% c('masculine', 'feminine')) 
+
+
+ggplot(starwars2, aes(x=height, y=mass)) + geom_smooth()
+
+ggplot(starwars2, aes(x=height, y=mass, color=sex)) + geom_smooth()
+
+ggplot(starwars2, aes(x=height, y=mass, colour=sex)) + 
+  geom_line(size=3) +
+  theme(
+    axis.line=element_line(size=0.5), 
+    panel.background=element_rect(fill=NA, size=rel(20)), 
+    panel.grid.minor=element_line(colour=NA), 
+    axis.text=element_text(size=16), 
+    axis.title=element_text(size=18)) + 
+  scale_y_continuous(expand=c(0,0))
+
+Orange
+Orange %>% 
+  filter(Tree != "1" &
+           Tree != "2") %>% 
+  ggplot(aes(x = age, y = circumference, colour = Tree)) + 
+  geom_point(size = 5, alpha = 0.3) + 
+  geom_line(size = 1) + 
+  theme_minimal() + 
+  labs(title = "Tree age and circumference")
+
+
+# line graphs with error bars (SEM) + customly-coloured
+# SEM, mean, custom colours
+library(ggplot2)
+
+sem <- function(x, na.rm = FALSE) {
+  out <- sd(x, na.rm = na.rm)/sqrt(length(x))
+  return(out)}
+pointcolour <- c("Fair" = "yellow", 
+                 "Good" = "red", 
+                 "Very Good" = "pink", 
+                 "Premium" = "blue", 
+                 "Ideal" = "black")
+#write.csv(diamonds, file="diamonds.csv", row.names=TRUE)
+
+
+```
+
+## Pie charts
+
+Nothing here right now...
+
+## Tiered faceted graphs
+
+```{r, warning = FALSE, results = 'asis'}
+
+library(ggpubr)
+
+p1 <- ggplot(diamonds[seq(1, 50000, by = 100),], aes(x = carat, y = price, colour = cut)) + geom_point() + facet_wrap( ~ cut, nrow = 1)
+p1
+p2 <- ggplot(diamonds[seq(1, 50000, by = 100),], aes(y = price, colour = cut)) + geom_boxplot() + facet_wrap( ~ cut, nrow = 1) # can add argument scale = "free_x" to make it automatically scaled
+p2
+ggarrange(p1, p2, nrow = 2, labels = "AUTO")
+# OR the same, just the entire dataset & without creating new variables #
+ggarrange(
+  # graph 1
+  ggplot(diamonds, aes(x = carat, y = price, colour = cut)) + geom_point() + facet_wrap( ~ cut, nrow = 1), 
+  # graph 2
+  ggplot(diamonds, aes(y = price, colour = cut)) + geom_boxplot() + facet_wrap( ~ cut, nrow = 1),
+  # ggarrange settings
+  nrow = 2, labels = "AUTO"
+)
+
+
+
+summary(relig_income)
+p1 <- relig_income %>% 
+  filter(religion == "Atheist" |
+           religion == "Mormon" |
+           religion == "Buddhist") %>%
+  melt(id.vars = "religion") %>% 
+  group_by(religion, variable) %>% 
+  ggplot(aes(x = religion, y = value, fill = variable)) +
+  geom_bar(stat="identity", position = "fill") +
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(), 
+        axis.title.x = element_blank(), 
+        panel.background = element_blank(), 
+        axis.line = element_line(size = 0.5)) + 
+  scale_color_brewer(palette = "Set1") +
+  labs(title = "Distribution of income levels by religion", 
+       y = "Percentage")
+p2 <- relig_income %>% 
+  filter(religion == "Atheist" |
+           religion == "Mormon" |
+           religion == "Buddhist") %>% 
+  melt(id.vars = "religion") %>% 
+  group_by(religion, variable) %>% 
+  ggplot(aes(x = religion, y = value)) + 
+  geom_bar(stat="identity") +
+  theme(panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(), 
+        axis.title = element_text(), 
+        panel.background = element_blank(), 
+        axis.line = element_line(size = 0.5)) + 
+  scale_color_brewer(palette = "Set1") +
+  labs(title = "Total count of observations by religion", 
+       x = "Religion", 
+       y = "Count")
+ggarrange(p1, p2, nrow = 2, labels = "AUTO")
+
+```
+
+
+# Graph customisation
+
+## Theme settings
+
+* Flip coordinates: + coord_flip()
+* Log scale: + scale_y_log10()
+* Show fonts: fonts()
+* Globally change theme settings: theme_set(theme_gray(base_size=20))
+
+
+## Colour changes
+
+* Globally reset theme settings to default: theme_set(theme_gray()) 
+* Black and white theme: mainplot + theme_bw()
+* Manually assign colours: scale_color_manual(values = c("#A6611A", "#DFC27D", "#6e6c6b", "#80CDC1", "#018571"))
+
+## Colour palettes
+
+* library(RColorBrewer)
+* display.brewer.all()
+* colours() # gives names of different colours
+* mainplot + scale_fill_brewer(palette="Set1")
+* Setting colour values for each of the 5 variables in my mainplot graph manually: mainplot + scale_fill_manual(values = c("green", "blue", "red", "orange", "grey")) 
+
+
+## Changing theme
+
+```+ theme()``` argument
+
+* Number size on axis: axis.text = element_text(size = 20) 
+* Title size on axis: axis.title = element_text(size = 20)
+* Legend: legend.title = element_text(size = 20)
+* Background: panel.background = element_rect(fill = "pink")
+* Change major gridlines: panel.grid.major = element_line(colour = "blue")
+  * size = 0.2
+  * NA
+* Change minor gridlines: panel.grid.minor = element_line(colour = "red")
+* Change tick marks: axis.ticks = element_line(size=2, colour="blue")
+  * As options: axis.ticks.x, axis.ticks.y
+* Change legend position: legend.position="top"
+  * Other arguments: 
+  * "bottom" 
+  * Bottom left: c(0,0) 
+  * Near the top right: c(0.8,0.8)
+
+
+
+## Changing labels
+
+```+ labs()``` argument
+
+* title = "Title"
+* y = "Title y"
+* x = "Title x"
+
+
+
+
+
+## Publication style
+
+Clear background, axis lines, no box, no grid lines, basic colors, no legend
+
+```{r, eval=FALSE}
+
+# Just for one plot
+mainplot + 
+  theme(
+    axis.line=element_line(size=0.5), 
+    panel.background=element_rect(fill=NA, size=rel(20)), 
+    panel.grid.minor=element_line(colour=NA), 
+    axis.text=element_text(size=16), 
+    axis.title=element_text(size=18)) +
+  scale_y_continuous(expand=c(0,0)) # to stop the bars from floaing above the x-axis
+
+# Globally apply this theme
+theme_set(theme_gray() + 
+            theme(
+              axis.line = element_line(size=0.5),
+              panel.background = element_rect(fill=NA,size=rel(20)), 
+              panel.grid.minor = element_line(colour = NA), 
+              axis.text = element_text(size=16), 
+              axis.title = element_text(size=18)
+            ))
+
+
+```
+
+
+

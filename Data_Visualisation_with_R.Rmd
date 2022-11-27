@@ -1,6 +1,6 @@
 ---
 # YAML metadata
-title: "R markdown main workfile"
+title: "R for Data Science - Manual"
 output:
   html_document: 
   # Add table of contents (TOC):
@@ -27,9 +27,9 @@ library(tidyverse)
 
 ```
 
-# Basic stuff and data operations
+# Basic information
 
-## Useful links and resources
+## Useful resources
 
 [!!! The most useful book for R markdown - "R Markdown: The Definitive Guide"](https://bookdown.org/yihui/rmarkdown/)
 [Ebook "R for Graduate Students"](https://bookdown.org/yih_huynh/Guide-to-R-Book/)  
@@ -69,7 +69,7 @@ loadfonts(device = "win") # loading fonts from extrafont
 ```
 
 
-## Functionality
+## Shortcuts
 
 * Ctrl + shift + R : creates headers for your R script   
 * Alt + shift + K : displays all programmed keyboard shortcuts for R   
