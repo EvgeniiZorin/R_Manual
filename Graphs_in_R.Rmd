@@ -21,6 +21,7 @@ editor_options:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_chunk$set(tidy.opts = list(width.cutoff = 60), tidy = TRUE)
+tinytex::install_tinytex(force = TRUE)
 library(tidyverse)
 # add parameter 'echo = FALSE' to the code chunk to prevent printing of the R code that generated the plot. 
 # more details: http://rmarkdown.rstudio.com
@@ -197,7 +198,7 @@ c
 >, <, ==, != 
 
 **Logical operators**
-& (and), | (or)
+`&` (and), `|` (or)
 
 
 # Flow statements
@@ -249,7 +250,7 @@ data() # check a list of pre-loaded datasets
 ```
 
 
-## Dplyr ( =pandas)
+## Dplyr ( = pandas)
 
 This is basically the analogue to Python's Pandas. 
 
@@ -265,22 +266,28 @@ dim(df) # Print dimensions of the dataset
 head(df) # Print the first 5 rows
 # Filter
 filter(starwars, height > 170, mass > 100)
+filter(starwars, hair_color == "black" | hair_color == "brown")
 # Select columns
 select(starwars, height, mass)
+### Select columns that start or end with ...
+select(starwars, starts_with("s"))
+select(starwars, ends_with("X"))
 # Choose a randomly-selected sample
 sample_n(starwars, 5) # A numbered sample
 sample_frac(starwars, 0.01) # Fraction of the dataset
+drop_na(starwars, sex) # Deal with NAN values
 
 ```
 An example of a pipeline of a dataset processing:
 
 ```{r}
 
-starwars %>% filter(mass < 80, sex == "male") -> males
+males <- starwars %>% 
+  filter(mass < 80, sex == "male") %>% 
+  drop_na(hair_color)
 males
 
 ```
-
 
 
 
@@ -410,7 +417,7 @@ df
 ```
 
 
-# Graphs and Figures
+# Data Visualisations
 
 By convention, independent variable is on X axis, and dependent variable is on Y axis. 
 
