@@ -60,7 +60,7 @@ install.packages('plotly')
 
 ```
 
-```{r, results ='hide', message=FALSE}
+```{r message=FALSE, results='hide'}
 
 library(afex); library(emmeans); library(tidyverse); library(writexl); library(readxl); library(ggthemes); library(extrafont); library(reshape); library(reshape2); library(gcookbook); library(readr); library(swirl); library(ggpubr); library(ggthemes); library(lubridate); library(rmarkdown); library(formatR); library(knitr); library(magrittr); library(glue); library(viridis); library(ggsci); library(gcookbook); library(plotly)
 
@@ -384,9 +384,9 @@ diamonds %>% mutate(cut = recode(cut, "Ideal" = "IDEAL", "Good" = "GOOD"))
 
 **Dataset** - a collection of quantitative and qualitative values. Every value belongs to a variable and an observation.    
 
-**Untidy (messy) data** - rows and columns are mixed up with observations and variables. 
-
-**Tidy data** - a standard way of mapping the meaning of a dataset to its structure. Variables are in columns and observations - in rows. Tidy data makes it easy to extract variables. 
+Datasets can be:
+- **Wide (untidy, messy) format**: rows and columns are mixed up with observations and variables. 
+- **Long (tidy) format**: a standard way of mapping the meaning of a dataset to its structure. Variables are in columns and observations - in rows. Tidy data makes it easy to extract variables. 
 
 **Examples**:
 
@@ -416,6 +416,26 @@ df
 
 ```
 
+Example of converting wide > long format:
+
+```{r}
+relig_income
+
+# Converting this dataframe into long format
+relig_income %>% 
+  pivot_longer(!religion, names_to = "income", values_to="count")
+
+
+```
+
+Or, you could need to convert long > wide format:
+
+```{r}
+fish_encounters
+
+fish_encounters %>% 
+  pivot_wider(names_from = fish, values_from = seen)
+```
 
 # Data Visualisations
 
